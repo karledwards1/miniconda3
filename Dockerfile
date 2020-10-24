@@ -52,7 +52,7 @@ ENV CONDA_MD5 751786b92c00b1aeae3f017b781018df
 # Create non-root user, install dependencies, install Conda
 #RUN addgroup -S anaconda && \
 #    adduser -D -u 10151 anaconda -G anaconda && \
-RUN apk update && apk upgrade \
+RUN apk update && apk upgrade && \
     wget --quiet https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
     echo "${CONDA_MD5}  Miniconda3-latest-Linux-x86_64.sh" > miniconda.md5 && \
     #if [ $(md5sum -c miniconda.md5 | awk '{print $2}') != "OK" ] ; then exit 1; fi && \
