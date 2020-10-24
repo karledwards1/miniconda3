@@ -1,7 +1,7 @@
 FROM alpine:3.9 as alpine-glibc
 
 LABEL MAINTAINER="Karl Edwards"
-LABEL SRC=https://github.com/karledwards1/miniconda3.git
+LABEL SRC=https://github.com/karledwards1/miniconda3
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV PATH /opt/conda/bin:$PATH
 
