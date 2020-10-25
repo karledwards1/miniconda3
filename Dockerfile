@@ -49,27 +49,15 @@ LABEL MAINTAINER="Anaconda, Inc"
 ENV CONDA_VERSION 4.8.3
 ENV CONDA_MD5 751786b92c00b1aeae3f017b781018df
 
-RUN apk update && \
-    apk upgrade && \
-    apk add python3 && \
-    apk add py3-pip
-
-RUN chmod -R 777 /usr/bin/pip3
-
-# Create non-root user, install dependencies, install Conda
+# Install dependencies, install Conda
 RUN addgroup -S anaconda && \
-    # adduser -D -u 10151 anaconda -G anaconda && \
     wget --quiet https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
     echo "${CONDA_MD5}  Miniconda3-latest-Linux-x86_64.sh" > miniconda.md5 && \
-    #if [ $(md5sum -c miniconda.md5 | awk '{print $2}') != "OK" ] ; then exit 1; fi && \
     mv Miniconda3-latest-Linux-x86_64.sh miniconda.sh && \
     mkdir -p /opt && \
     sh ./miniconda.sh -b -p /opt/conda && \
     rm miniconda.sh miniconda.md5 && \
     ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
-    # chown -R anaconda:anaconda /opt && \
-    # echo ". /opt/conda/etc/profile.d/conda.sh" >> /home/anaconda/.profile && \
-    # echo "conda activate base" >> /home/anaconda/.profile && \
     touch /root/.profile && \
     echo ". /opt/conda/etc/profile.d/conda.sh" >> /root/.profile && \
     echo "conda activate base" >> /root/.profile && \
@@ -77,8 +65,7 @@ RUN addgroup -S anaconda && \
     find /opt/conda/ -follow -type f -name '*.js.map' -delete && \
     /opt/conda/bin/conda clean -afy
 
-
-#USER  10151
-ENV PATH "/bin:/sbin:/usr/bin"
+USER  0
+ENV PATH "/opt/conda/bin:/opt/conda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 CMD [ "sh", "--login", "-i" ]
