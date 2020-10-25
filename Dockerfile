@@ -58,7 +58,7 @@ RUN chmod -R 777 /usr/bin/pip3
 
 # Create non-root user, install dependencies, install Conda
 RUN addgroup -S anaconda && \
-    adduser -D -u 10151 anaconda -G anaconda && \
+    # adduser -D -u 10151 anaconda -G anaconda && \
     wget --quiet https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
     echo "${CONDA_MD5}  Miniconda3-latest-Linux-x86_64.sh" > miniconda.md5 && \
     #if [ $(md5sum -c miniconda.md5 | awk '{print $2}') != "OK" ] ; then exit 1; fi && \
@@ -67,9 +67,12 @@ RUN addgroup -S anaconda && \
     sh ./miniconda.sh -b -p /opt/conda && \
     rm miniconda.sh miniconda.md5 && \
     ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
-    chown -R anaconda:anaconda /opt && \
-    echo ". /opt/conda/etc/profile.d/conda.sh" >> /home/anaconda/.profile && \
-    echo "conda activate base" >> /home/anaconda/.profile && \
+    # chown -R anaconda:anaconda /opt && \
+    # echo ". /opt/conda/etc/profile.d/conda.sh" >> /home/anaconda/.profile && \
+    # echo "conda activate base" >> /home/anaconda/.profile && \
+    touch /root/.profile && \
+    echo ". /opt/conda/etc/profile.d/conda.sh" >> /root/.profile && \
+    echo "conda activate base" >> /root/.profile && \
     find /opt/conda/ -follow -type f -name '*.a' -delete && \
     find /opt/conda/ -follow -type f -name '*.js.map' -delete && \
     /opt/conda/bin/conda clean -afy
